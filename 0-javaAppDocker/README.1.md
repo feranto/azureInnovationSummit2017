@@ -17,7 +17,7 @@ ENV TOMCAT_MINOR_VERSION 8.0.11
 ENV CATALINA_HOME /tomcat
 ```
 
-    Acá especificamos lo siguiente:
-    -   Version de jdk
-    -   Version de maven
-    -   Variables de entorno
+Acá especificamos lo siguiente:
+-   Version de jdk
+-   Version de maven
+-   Variables de entorno
