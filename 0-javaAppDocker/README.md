@@ -253,6 +253,25 @@ Y para poder cancelarlo podemos usar:
 docker rm -vf spring
 ```
 
+## Agregamos Nuestra aplicación a la imagen
+
+1.  Para esto creamos una nueva carpeta y nuevo Dockerfile, adicionalmente a los scripsts de create_tomcat_admin_user.sh y run.sh ahora vamos a agregar el archivo springwebapp.war en nuestro Dockerfile de la siguiente manera:
+```c
+ADD springwebapp.war /tomcat/webapps/springwebapp.war
+```
+
+2.  Construimos nuestra imagen:
+```c
+$ docker build -f Dockerfile -t ejemplo/springapp:1-maven-3.3-jdk-8 .
+```
+
+3.  Ahora para correrla simplemente hacemos:
+```c
+    docker run -it --name spring2 -p 8080:8080 ejemplo/springapp:1-maven-3.3-java-8 bash -c "/tomcat/bin/catalina.sh run"
+```
+
+
+
 
 
 
@@ -282,9 +301,3 @@ docker push yourhubusername/verse_gapminder
 
 
 
-
-ejemplo/srpingapp:1-maven-3.3-jdk-8
-
-docker run -it -d --name spring -p 8080:8080 -v "$PWD":/app ejemplo/srpingapp:1-maven-3.3-jdk-8 bash -c "cp /app/target/springwebapp.war /tomcat/webapps/ & /tomcat/bin/catalina.sh run"
-
-$ docker run -it -d --name spring -p 8080:8080 -v "$PWD":/app ejemplo/spring:maven-3.3-jdk-8 bash -c "cp /app/target/springwebapp.war /tomcat/webapps/ & /tomcat/bin/catalina.sh run"
