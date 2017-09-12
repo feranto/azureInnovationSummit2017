@@ -268,6 +268,10 @@ $ docker build -f Dockerfile -t ejemplo/springapp:1-maven-3.3-jdk-8 .
 3.  Ahora para correrla simplemente hacemos:
 ```c
     docker run -it --name spring2 -p 8080:8080 ejemplo/springapp:1-maven-3.3-java-8 bash -c "/tomcat/bin/catalina.sh run"
+
+    o tambien
+
+     docker run -it -p 8080:8080 feranto/java-maven-spring:v1 bash -c "/tomcat/bin/catalina.sh run"
 ```
 
 
