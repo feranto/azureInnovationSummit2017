@@ -23,4 +23,4 @@ RUN chmod +x /etc/service/tomcat/run
 
 EXPOSE 8080
 
-CMD ["/etc/service/tomcat/run"]
+CMD ["/sbin/my_init"]
