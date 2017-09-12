@@ -227,14 +227,14 @@ $ cd spring-maven-sample
 
 10. Ejecutamos el siguiente comando para empaquetar y construir el proyecto:
 ```c
-$ docker run -it --rm -v "$PWD":/app -w /app demo/spring:maven-3.3-jdk-8 mvn clean install
+$ docker run -it --rm -v "$PWD":/app -w /app ejemplo/spring:maven-3.3-jdk-8 mvn clean install
 ```
 
 El comando anterior creará un archivo war en el directorio target/springwebapp.war
 
 11. Copiamos este war al directorio webapps de Tomcat:
 ```c
-$ docker run -it -d --name spring -p 8080:8080 -v "$PWD":/app demo/spring:maven-3.3-jdk-8 bash -c "cp /app/target/springwebapp.war /tomcat/webapps/ & /tomcat/bin/catalina.sh run"
+$ docker run -it -d --name spring -p 8080:8080 -v "$PWD":/app ejemplo/spring:maven-3.3-jdk-8 bash -c "cp /app/target/springwebapp.war /tomcat/webapps/ & /tomcat/bin/catalina.sh run"
 ```
 
 12. Finalmente accedemos nuestra app con la siguiente URL:
