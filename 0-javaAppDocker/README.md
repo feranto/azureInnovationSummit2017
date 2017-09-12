@@ -126,19 +126,13 @@ $ docker build -f Dockerfile -t ejemplo/maven:3.3-jdk-8 .
 
 
 
-
-
-
-
-
-
-
+## Agregamos Tomcat a la imagen Maven
 
 1.  Lo primero que debemos hacer es crear una nueva carpeta y un nuevo archivo de tipo "dockerfile"
 2.  Dentro de este archivo agregamos el siguiente contenido:
 ```c
 # Dockerfile
-FROM demo/maven:3.3-jdk-8
+FROM ejemplo/maven:3.3-jdk-8
 MAINTAINER Author <autor@email.com>
 RUN apt-get update && \
     apt-get install -yq --no-install-recommends wget pwgen ca-certificates && \
@@ -149,10 +143,6 @@ ENV TOMCAT_MINOR_VERSION 8.0.11
 ENV CATALINA_HOME /tomcat
 ```
 
-Acá especificamos lo siguiente:
--   Version de jdk
--   Version de maven
--   Variables de entorno
 
 3.  Luego procedemos a instalar tomcat:
 ```c
