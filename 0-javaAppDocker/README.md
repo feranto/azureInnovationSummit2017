@@ -101,7 +101,7 @@ Estos nos creará la imagen ejemplo/java:8 en nuestro sistema para poder seguir 
 
 ```c
 # Dockerfile
-FROM ejemplo/oracle-java:8
+FROM ejemplo/java:8
 
 ENV MAVEN_VERSION 3.3.9
 

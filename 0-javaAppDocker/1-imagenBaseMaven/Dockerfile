@@ -1,5 +1,5 @@
 # Dockerfile
-FROM demo/oracle-java:8
+FROM ejemplo/oracle-java:8
 
 ENV MAVEN_VERSION 3.3.9
 
