@@ -2,6 +2,97 @@
 
 En este tutorial vamos a mostrarte como crear un contenedor para una aplicación Spring MVC:
 
+0.  Primero seleccionamos una imagen a partir de la cual deseamos partir, en este caso utilizaremos la imagen base minimalista de ubuntu:
+```c
+phusion/baseimage:0.9.17
+```
+
+1.  Luego procedemos a actualizar los repositorios de paquetes:
+```c
+RUN echo "deb http://archive.ubuntu.com/ubuntu trusty main universe" > /etc/apt/sources.list
+
+RUN apt-get -y update
+```
+
+2.  Luego instalamos paquetes que utilizaremos más adelante:
+```c
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -q python-software-properties software-properties-common
+
+
+RUN apt-get -y update
+```
+
+3.  Luego instalamos java 8:
+```c
+ENV JAVA_VER 8
+ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
+
+RUN echo 'deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main' >> /etc/apt/sources.list && \
+    echo 'deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main' >> /etc/apt/sources.list && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C2518248EEA14886 && \
+    apt-get update && \
+    echo oracle-java${JAVA_VER}-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections && \
+    apt-get install -y --force-yes --no-install-recommends oracle-java${JAVA_VER}-installer oracle-java${JAVA_VER}-set-default && \
+    apt-get clean && \
+    rm -rf /var/cache/oracle-jdk${JAVA_VER}-installer
+
+RUN update-java-alternatives -s java-8-oracle
+
+RUN echo "export JAVA_HOME=/usr/lib/jvm/java-8-oracle" >> ~/.bashrc
+```
+
+4.  Hacemos un clean up de APT
+```c
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+```
+
+5.  Luego utilizamos el inicio del sistema de la imagen base:
+```c
+CMD ["/sbin/my_init"]
+```
+
+Y tenemos nuestro Dockerfile listo:
+```c
+# Dockerfile
+
+FROM  phusion/baseimage:0.9.17
+
+MAINTAINER  Author Name <author@email.com>
+
+RUN echo "deb http://archive.ubuntu.com/ubuntu trusty main universe" > /etc/apt/sources.list
+
+RUN apt-get -y update
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -q python-software-properties software-properties-common
+
+ENV JAVA_VER 8
+ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
+
+RUN echo 'deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main' >> /etc/apt/sources.list && \
+    echo 'deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main' >> /etc/apt/sources.list && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C2518248EEA14886 && \
+    apt-get update && \
+    echo oracle-java${JAVA_VER}-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections && \
+    apt-get install -y --force-yes --no-install-recommends oracle-java${JAVA_VER}-installer oracle-java${JAVA_VER}-set-default && \
+    apt-get clean && \
+    rm -rf /var/cache/oracle-jdk${JAVA_VER}-installer
+
+RUN update-java-alternatives -s java-8-oracle
+
+RUN echo "export JAVA_HOME=/usr/lib/jvm/java-8-oracle" >> ~/.bashrc
+
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+CMD ["/sbin/my_init"]
+```
+
+6.  Ahora procedemos a construir una imagen con nuestro Dockerfile
+```c
+$ docker build -f Dockerfile -t ejemplo/java:8 .
+```
+
+
+
 1.  Lo primero que debemos hacer es crear una nueva carpeta y un nuevo archivo de tipo "dockerfile"
 2.  Dentro de este archivo agregamos el siguiente contenido:
 ```c
@@ -93,7 +184,7 @@ exec ${CATALINA_HOME}/bin/catalina.sh run
 
 8.  Construimos y probamos la imagen
 ```c
-$ docker build -f Dockerfile -t demo/spring:maven-3.3-jdk-8
+$ docker build -f Dockerfile -t demo/spring:maven-3.3-jdk-8 .
 ```
 
 9.  Cargamos una aplicación de muestra spring mvc
