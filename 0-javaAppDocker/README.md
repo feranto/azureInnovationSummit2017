@@ -2,6 +2,7 @@
 
 En este tutorial vamos a mostrarte como crear un contenedor para una aplicación Spring MVC:
 
+## Creación de Imagen Base
 0.  Primero seleccionamos una imagen a partir de la cual deseamos partir, en este caso utilizaremos la imagen base minimalista de ubuntu:
 ```c
 phusion/baseimage:0.9.17
@@ -90,6 +91,46 @@ CMD ["/sbin/my_init"]
 ```c
 $ docker build -f Dockerfile -t ejemplo/java:8 .
 ```
+
+Estos nos creará la imagen ejemplo/java:8 en nuestro sistema para poder seguir construyendo con ella.
+
+
+## Agregamos Maven a la imagen Base
+
+1.  Vamos a utilizar la imagen que creamos recientemente ejemplo/java:8 como base. Y creamos una nueva carpeta y un nuevo dockerfile y agregamos lo siguiente:
+
+```c
+# Dockerfile
+FROM demo/oracle-java:8
+
+ENV MAVEN_VERSION 3.3.9
+
+RUN mkdir -p /usr/share/maven \
+  && curl -fsSL http://apache.osuosl.org/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz \
+    | tar -xzC /usr/share/maven --strip-components=1 \
+  && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
+
+ENV MAVEN_HOME /usr/share/maven
+
+VOLUME /root/.m2
+
+CMD ["mvn"] 
+```
+
+2.  Luego construigmos la imagen:
+
+```c
+$ docker build -f Dockerfile -t ejemplo/maven:3.3-jdk-8 .
+```
+
+
+
+
+
+
+
+
+
 
 
 
