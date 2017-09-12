@@ -166,7 +166,7 @@ EXPOSE 8080
 CMD ["/sbin/my_init"]
 ```
 
-5.  Creamos el usuario administrador de tomcat
+5.  Creamos un archivo llamado create_tomcat_admin_user.sh en el mismo directorio con el siguiente contenido:
 ```c
 !/bin/bash
 
@@ -176,7 +176,7 @@ if [ -f /.tomcat_admin_created ]; then
 fi
 ```
 
-6.  Generamos una password para el usuario
+6.  Añadimos las siguientes lineas en donde generamos una password para el usuario
 ```c
 PASS=${TOMCAT_PASS:-$(pwgen -s 12 1)}
 _word=$( [ ${TOMCAT_PASS} ] && echo "preset" || echo "random" )
@@ -201,7 +201,7 @@ echo ""
 echo "========================================================================"
 ```
 
-7.  Agregamos un archivo más para crear los usuarios y luego reiniciar el servidor tomcat:
+7.  Agregamos un archivo más llamado run.sh para crear los usuarios y luego reiniciar el servidor tomcat:
 
 ```c
 !/bin/bash
@@ -215,7 +215,7 @@ exec ${CATALINA_HOME}/bin/catalina.sh run
 
 8.  Construimos y probamos la imagen
 ```c
-$ docker build -f Dockerfile -t demo/spring:maven-3.3-jdk-8 .
+$ docker build -f Dockerfile -t ejemplo/spring:maven-3.3-jdk-8 .
 ```
 
 9.  Cargamos una aplicación de muestra spring mvc
