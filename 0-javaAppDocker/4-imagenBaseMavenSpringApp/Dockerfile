@@ -20,8 +20,7 @@ RUN mkdir /etc/service/tomcat
 ADD run.sh /etc/service/tomcat/run
 RUN chmod +x /*.sh
 RUN chmod +x /etc/service/tomcat/run
-RUN ./etc/service/tomcat/run
 
 EXPOSE 8080
 
-CMD ["/sbin/my_init"]
+CMD ["/sbin/my_init & /etc/service/tomcat/run"]
