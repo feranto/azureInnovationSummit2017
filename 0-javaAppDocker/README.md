@@ -236,8 +236,55 @@ El comando anterior creará un archivo war en el directorio target/springwebapp.
 ```c
 $ docker run -it -d --name spring -p 8080:8080 -v "$PWD":/app ejemplo/spring:maven-3.3-jdk-8 bash -c "cp /app/target/springwebapp.war /tomcat/webapps/ & /tomcat/bin/catalina.sh run"
 ```
+Aca el parametro -d, hará que corra en modo "detached" y también mapea el puerto 8080 del contenedor al puerto 8080 de la maquina.
 
 12. Finalmente accedemos nuestra app con la siguiente URL:
 ```c
 http://localhost:8080/springwebapp/car/add
 ```
+
+Para chequear el proceso podemos hacer el siguiente comando:
+```c
+$ docker ps
+```
+
+Y para poder cancelarlo podemos usar:
+```c
+docker rm -vf spring
+```
+
+
+
+
+## Guardamos la imagen en un registro
+
+Finalmente lo que haremos será subir esta imagen a un registro, en este caso dockerhub para ello hacemos los siguientes pasos:
+
+1.  Hacemos login con nuestra cuenta de docker hub:
+```c
+docker login --username=yourhubusername 
+```
+
+2.  Luego procedemos a obtener nuestras imagenes locales:
+```c
+docker images
+```
+
+3.  Luego agregamos etiquetas a nuestra imagen
+```c
+docker tag bb38976d03cf yourhubusername/verse_gapminder:firsttry
+```
+
+4.  Luego hacemos push a nuestra imagen
+```c
+docker push yourhubusername/verse_gapminder
+```
+
+
+
+
+ejemplo/srpingapp:1-maven-3.3-jdk-8
+
+docker run -it -d --name spring -p 8080:8080 -v "$PWD":/app ejemplo/srpingapp:1-maven-3.3-jdk-8 bash -c "cp /app/target/springwebapp.war /tomcat/webapps/ & /tomcat/bin/catalina.sh run"
+
+$ docker run -it -d --name spring -p 8080:8080 -v "$PWD":/app ejemplo/spring:maven-3.3-jdk-8 bash -c "cp /app/target/springwebapp.war /tomcat/webapps/ & /tomcat/bin/catalina.sh run"
